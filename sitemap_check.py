@@ -1,9 +1,11 @@
+import requests
 import streamlit as st
 import advertools as adv
 import pandas as pd
 
 urls_dict = {
 	'URL': [],
+	'Status Code': [],
 	'Status': []
 }
 
@@ -26,6 +28,8 @@ if submit and crawl_csv:
 
 	for url in crawl_csv_url_list:
 		urls_dict['URL'].append(url)
+		status_code = requests.get(url).status_code
+		urls_dict['Status Code'].append(status_code)
 		if url in sitemap_url_list:			
 			urls_dict['Status'].append('Found in sitemap')
 		else:
@@ -40,6 +44,8 @@ elif submit and urls_to_check:
 
 	for u in url_list:
 		urls_dict['URL'].append(u)
+		status_code = requests.get(u).status_code
+		urls_dict['Status Code'].append(status_code)
 		if u in sitemap_url_list:			
 			urls_dict['Status'].append('Found in sitemap')
 		else:
@@ -49,4 +55,4 @@ elif submit and urls_to_check:
 	df = pd.DataFrame(urls_dict)
 	st.dataframe(df)
 	df_csv = df.to_csv(index=False)
-	st.download_button(label="Download data as CSV", data=df_csv, file_name='urls_in_sitemap.csv', mime='text/csv')
+	st.download_button(label="Download data as CSV", data=df_csv, file_name=f"{sitemap_link}_urls_in_sitemap.csv", mime='text/csv')
