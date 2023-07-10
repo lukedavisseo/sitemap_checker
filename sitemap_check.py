@@ -18,6 +18,7 @@ st.info("This script takes a CSV export of 'Primary Pages Not in Sitemaps' from 
 crawl_csv = st.file_uploader('Upload your Lumar CSV file')
 urls_to_check = st.text_area('Or add a list of URLs to check, 1 per line')
 sitemap_link = st.text_input('Enter XML sitemap to check')
+include_status_code = st.checkbox('Turn off status code checker')
 submit = st.button('Submit')
 
 if submit and crawl_csv:
@@ -28,12 +29,15 @@ if submit and crawl_csv:
 
 	for url in crawl_csv_url_list:
 		urls_dict['URL'].append(url)
-		status_code = requests.get(url).status_code
-		urls_dict['Status Code'].append(status_code)
-		if url in sitemap_url_list:			
-			urls_dict['Status'].append('Found in sitemap')
+		if not include_status_code:
+			status_code = requests.get(url).status_code
+			urls_dict['Status Code'].append(status_code)
 		else:
-			urls_dict['Status'].append('Not found in sitemap')
+			if url in sitemap_url_list:			
+				urls_dict['Status'].append('Found in sitemap')
+			else:
+				urls_dict['Status'].append('Not found in sitemap')
+			urls_dict['Status Code'].append("-")
 
 elif submit and urls_to_check:
 
@@ -44,12 +48,15 @@ elif submit and urls_to_check:
 
 	for u in url_list:
 		urls_dict['URL'].append(u)
-		status_code = requests.get(u).status_code
-		urls_dict['Status Code'].append(status_code)
-		if u in sitemap_url_list:			
-			urls_dict['Status'].append('Found in sitemap')
+		if not include_status_code:
+			status_code = requests.get(u).status_code
+			urls_dict['Status Code'].append(status_code)
 		else:
-			urls_dict['Status'].append('Not found in sitemap')
+			if u in sitemap_url_list:			
+				urls_dict['Status'].append('Found in sitemap')
+			else:
+				urls_dict['Status'].append('Not found in sitemap')
+			urls_dict['Status Code'].append("-")
 
 
 	df = pd.DataFrame(urls_dict)
