@@ -17,8 +17,6 @@ st.header('Is it really not in the sitemap?')
 
 st.info("This script takes a CSV export of 'Primary Pages Not in Sitemaps' from Lumar and checks the site's sitemap to see if they really are missing.")
 
-# urls_to_check = st.text_area('Enter the URLs you want to check, one per line')
-
 crawl_csv = st.file_uploader('Upload your Lumar CSV file')
 urls_to_check = st.text_area('Or add a list of URLs to check, 1 per line')
 sitemap_link = st.text_input('Enter XML sitemap to check')
