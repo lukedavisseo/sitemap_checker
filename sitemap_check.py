@@ -3,6 +3,10 @@ import streamlit as st
 import advertools as adv
 import pandas as pd
 
+headers = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+}
+
 urls_dict = {
 	'URL': [],
 	'Status Code': [],
@@ -27,13 +31,17 @@ if submit and crawl_csv:
 	sitemap_df = adv.sitemap_to_df(sitemap_link)
 	sitemap_url_list = sitemap_df['loc'].to_list()
 
-	for url in crawl_csv_url_list:
-		urls_dict['URL'].append(url)
+	for u in crawl_csv_url_list:
+		urls_dict['URL'].append(u)
 		if not include_status_code:
-			status_code = requests.get(url).status_code
+			status_code = requests.get(u, headers=headers).status_code
 			urls_dict['Status Code'].append(status_code)
+			if u in sitemap_url_list:			
+				urls_dict['Status'].append('Found in sitemap')
+			else:
+				urls_dict['Status'].append('Not found in sitemap')
 		else:
-			if url in sitemap_url_list:			
+			if u in sitemap_url_list:			
 				urls_dict['Status'].append('Found in sitemap')
 			else:
 				urls_dict['Status'].append('Not found in sitemap')
@@ -49,8 +57,12 @@ elif submit and urls_to_check:
 	for u in url_list:
 		urls_dict['URL'].append(u)
 		if not include_status_code:
-			status_code = requests.get(u).status_code
+			status_code = requests.get(u, headers=headers).status_code
 			urls_dict['Status Code'].append(status_code)
+			if u in sitemap_url_list:			
+				urls_dict['Status'].append('Found in sitemap')
+			else:
+				urls_dict['Status'].append('Not found in sitemap')
 		else:
 			if u in sitemap_url_list:			
 				urls_dict['Status'].append('Found in sitemap')
@@ -59,6 +71,7 @@ elif submit and urls_to_check:
 			urls_dict['Status Code'].append("-")
 
 
+	st.write(urls_dict)
 	df = pd.DataFrame(urls_dict)
 	st.dataframe(df)
 	df_csv = df.to_csv(index=False)
