@@ -20,7 +20,7 @@ st.info("This script takes a CSV export of 'Primary Pages Not in Sitemaps' from 
 crawl_csv = st.file_uploader('Upload your Lumar CSV file')
 urls_to_check = st.text_area('Or add a list of URLs to check, 1 per line')
 sitemap_link = st.text_input('Enter XML sitemap to check')
-include_status_code = st.checkbox('Turn off status code checker')
+include_status_code = st.checkbox('Turn off status code checker', value=True)
 submit = st.button('Submit')
 
 if submit and crawl_csv:
@@ -69,8 +69,6 @@ elif submit and urls_to_check:
 			urls_dict['Status Code'].append("-")
 
 
-	st.write(urls_dict)
 	df = pd.DataFrame(urls_dict)
 	st.dataframe(df)
 	df_csv = df.to_csv(index=False)
-	st.download_button(label="Download data as CSV", data=df_csv, file_name=f"{sitemap_link}_urls_in_sitemap.csv", mime='text/csv')
