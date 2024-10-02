@@ -71,6 +71,6 @@ elif submit and urls_to_check:
 			urls_dict['Status Code'].append("-")
 
 
-	df = pd.DataFrame(urls_dict)
-	st.dataframe(df)
-	df_csv = df.to_csv(index=False)
+df = pd.DataFrame(urls_dict)
+st.dataframe(df)
+df_csv = df.to_csv(index=False)
