@@ -17,7 +17,7 @@ st.header('Is it really not in the sitemap?')
 
 st.info("This script takes a CSV export of 'Primary Pages Not in Sitemaps' from Lumar and checks the site's sitemap to see if they really are missing.")
 
-crawl_csv = st.file_uploader('Upload your Lumar CSV file')
+crawl_csv = st.file_uploader('Upload a CSV file that includes a list of URLs')
 urls_to_check = st.text_area('Or add a list of URLs to check, 1 per line')
 sitemap_link = st.text_input('Enter XML sitemap to check')
 include_status_code = st.checkbox('Turn off status code checker', value=True)
@@ -25,7 +25,8 @@ submit = st.button('Submit')
 
 if submit and crawl_csv:
 
-	crawl_csv_url_list = pd.read_csv(crawl_csv)['url'].tolist()
+	read_crawl_csv = pd.read_csv(crawl_csv)
+	crawl_csv_url_list = read_crawl_csv.filter(regex='^[uU](rl$|RL$|rls$|RLs$)').tolist()
 	sitemap_df = adv.sitemap_to_df(sitemap_link)
 	sitemap_url_list = sitemap_df['loc'].to_list()
 
