@@ -26,7 +26,8 @@ submit = st.button('Submit')
 if submit and crawl_csv:
 
 	read_crawl_csv = pd.read_csv(crawl_csv)
-	crawl_csv_url_list = read_crawl_csv.filter(regex='^[uU](rl$|RL$|rls$|RLs$)').to_list()
+	crawl_csv = read_crawl_csv.filter(regex='^[uU](rl$|RL$|rls$|RLs$)')
+	crawl_csv_url_list = crawl_csv.iloc[:,0].to_list()
 	sitemap_df = adv.sitemap_to_df(sitemap_link)
 	sitemap_url_list = sitemap_df['loc'].to_list()
 
