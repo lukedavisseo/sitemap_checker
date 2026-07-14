@@ -1,6 +1,6 @@
 # Sitemap Checker
 
-<img src="https://api.iconify.design/vscode-icons/file-type-sitemap.svg" alt="a sitemap icon" width="64" height="64" align="right">
+<img src="https://github.com/lukedavisseo/sitemap_checker/blob/main/sitemap-icon.png" alt="a sitemap icon" width="64" height="64" align="right">
 
 > an app that checks a list of URLs to see if they're in a given sitemap or sitemap index
 
